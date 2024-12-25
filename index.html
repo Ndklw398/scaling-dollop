@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Расширители для носа</title>
+  <!-- Подключение шрифта (по желанию можно заменить) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" 
+    rel="stylesheet"
+  >
+  <style>
+    /* Сброс базовых стилей */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* 
+      ==================================
+      Шапка с фоновой картинкой
+      ==================================
+    */
+    header {
+      width: 100%;
+      height: 80vh; /* Можно отрегулировать под ваш вкус */
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Затемнение фона для читабельности текста */
+    header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 0;
+    }
+
+    header .hero-text {
+      position: relative;
+      z-index: 1; /* Текст поверх затемнения */
+      text-align: center;
+      color: #fff;
+      font-size: 2rem;
+      max-width: 80%;
+      line-height: 1.4;
+      animation: fadeIn 1.5s ease forwards;
+      opacity: 0; /* Исходное значение для анимации */
+    }
+
+    /* 
+      ==================================
+      Горизонтальный слайдер (изображения)
+      ==================================
+    */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      margin: 40px auto;
+      overflow: hidden;
+    }
+
+    .slider-wrapper {
+      display: flex;
+      transition: transform 0.6s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 60vh; /* Регулируйте под свой вкус */
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      color: #ffffff;
+    }
+
+    .slide img {
+      /* Картинка с небольшим зумом для динамики */
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      transform: scale(1.05);
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .slide img:hover {
+      transform: scale(1.08);
+    }
+
+    /* Контейнер для текста поверх слайда */
+    .slide-content {
+      position: relative;
+      z-index: 1;
+      width: 80%;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0; /* Исходное значение для анимации */
+      transform: translateY(20px); /* Исходное положение для анимации */
+    }
+
+    .slide-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .slide-content p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Кнопки переключения слайдов (изображения) */
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
+    .slider-nav button {
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+
+    .slider-nav button:hover {
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    /* 
+      ==================================
+      Блок с текстом (выше слайдера с причинами)
+      ==================================
+    */
+    .text-block {
+      max-width: 800px; 
+      margin: 40px auto; 
+      padding: 20px; 
+      background-color: #fff; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      animation: fadeIn 1s ease forwards;
+      opacity: 0; /* Исходное значение для анимации */
+    }
+
+    .text-block p {
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    /* 
+      ==================================
+      Горизонтальный слайдер (причины дышать носом)
+      ==================================
+    */
+    .reasons-slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      margin: 40px auto;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .reasons-slider-container h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .reasons-slider {
+      display: flex;
+      transition: transform 0.6s ease;
+    }
+
+    .reason-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    .reason-slide h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .reason-slide p {
+      line-height: 1.5;
+    }
+
+    .reasons-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
+    .reasons-nav button {
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+
+    .reasons-nav button:hover {
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    /* 
+      ==================================
+      Горизонтальный слайдер (видео)
+      ==================================
+    */
+    .video-slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      margin: 40px auto;
+      overflow: hidden;
+    }
+
+    .video-slider {
+      display: flex;
+      transition: transform 0.6s ease;
+    }
+
+    .video-slide {
+      min-width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000; /* Фон под видео */
+    }
+
+    .video-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
+    .video-nav button {
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
+
+    .video-nav button:hover {
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    /* 
+      ==================================
+      Форма заказа
+      ==================================
+    */
+    .order-form {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 30px;
+      animation: fadeIn 1s ease forwards;
+      opacity: 0; /* Исходное значение для анимации */
+    }
+
+    .order-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .contact-buttons button {
+      width: 48%;
+      padding: 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .contact-buttons .btn-call {
+      background-color: #1b74e4; /* Синий */
+    }
+
+    .contact-buttons .btn-whatsapp {
+      background-color: #25d366; /* Зеленый WhatsApp */
+    }
+
+    .contact-buttons button:hover {
+      filter: brightness(0.9);
+    }
+
+    /* 
+      ==================================
+      Анимации
+      ==================================
+    */
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 
+      ==================================
+      Адаптивность
+      ==================================
+    */
+    @media (max-width: 768px) {
+      header {
+        height: 60vh;
+      }
+      .slide {
+        height: 40vh;
+      }
+      .slide-content h3 {
+        font-size: 1.2rem;
+      }
+      .slide-content p {
+        font-size: 0.9rem;
+      }
+      .order-form {
+        margin: 20px auto;
+        padding: 20px;
+      }
+      .text-block {
+        margin: 20px auto;
+        padding: 15px;
+      }
+      .reasons-slider-container {
+        padding: 10px;
+      }
+      .reason-slide {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 
+    ШАПКА С ФОТО 
+    Замените hero.jpg на вашу фотографию из папки img
+  -->
+  <header style="background-image: url('img/Group 3.jpg');">
+    <div class="hero-text">
+      <h1>Расширители для носа</h1>
+      <p>Ощутите, что значит дышать по-настоящему свободно</p>
+    </div>
+  </header>
+
+  <!-- 
+    ГОРИЗОНТАЛЬНЫЙ СЛАЙДЕР (изображения)
+  -->
+  <div class="slider-container">
+    <div class="slider-wrapper" id="sliderWrapper">
+      
+      <!-- Слайд 1 -->
+      <div class="slide">
+        <img src="img/4943eec0-bf9e-4f4b-b0b5-d20e78e61b20.jpg" alt="Slide 1">
+        <div class="slide-content">
+          <h3>1. Ты до сих пор не приобрёл себе расширитель зная всю его пользу? Бегом брать и многократно насыщать кислородом свой уставший от дефицита кислорода мозг и мышцы как это в норме должно быть!</h3>
+          <p>Не знаешь пользу? Листай!</p>
+        </div>
+      </div>
+      
+      <!-- Слайд 2 -->
+      <div class="slide">
+        <img src="img/0426ddd4-5aab-4ce5-b148-b9e29ea55845.jpg" alt="Slide 2">
+        <div class="slide-content">
+          <h3>2. Свободное дыхание и качественный сон</h3>
+          <p>
+            Вы спите? А на самом деле — дышите ли вы по-настоящему, когда спите?  
+            Испытайте, что значит дышать по-настоящему свободно и высыпаться 
+            с нашим расширителем для носа!
+          </p>
+        </div>
+      </div>
+
+      <!-- Слайд 3 -->
+      <div class="slide">
+        <img src="img/46546262-0de3-46cc-825d-2feba5ec7485.jpg" alt="Slide 3">
+        <div class="slide-content">
+          <h3>3. Стресс, усталость и дыхание</h3>
+          <p>
+            Устали от хронической усталости? Простое решение — 
+            расширитель для носа. Наслаждайтесь свободным дыханием ночью 
+            и энергией днём!
+          </p>
+        </div>
+      </div>
+
+      <!-- Слайд 4 -->
+      <div class="slide">
+        <img src="img/866b3ace-dbd8-47df-9cee-1d8d3c11c59f.jpg" alt="Slide 4">
+        <div class="slide-content">
+          <h3>4. Не ждите, пока дыхание станет проблемой</h3>
+          <p>
+            Не ждите, пока дыхание станет проблемой. Ощутите разницу 
+            с расширителем для носа, который сделает ваше дыхание лёгким 
+            и свободным прямо сейчас!
+          </p>
+        </div>
+      </div>
+
+      <!-- Слайд 5 -->
+      <div class="slide">
+        <img src="img/6ca04517-1f3d-4532-88c9-e12d30b2d220.jpg" alt="Slide 5">
+        <div class="slide-content">
+          <h3>5. Улучшите дыхание для спорта</h3>
+          <p>
+            Блокировка носа может мешать вашим тренировкам! Получите 
+            полный доступ к кислороду и улучшите результаты с нашим 
+            расширителем для носа. Легче дышать — легче тренироваться!
+          </p>
+        </div>
+      </div>
+
+      <!-- Слайд 6 -->
+      <div class="slide">
+        <img src="img/0426ddd4-5aab-4ce5-b148-b9e29ea55845.jpg" alt="Slide 6">
+        <div class="slide-content">
+          <h3>6. Дыхание через нос для здоровья</h3>
+          <p>
+            Вы знали, что дыхание через нос гораздо эффективнее для 
+            вашего здоровья? Освободите дыхание и почувствуйте разницу 
+            с расширителем для носа — для чистого и здорового вдоха!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Кнопки переключения (изображения) -->
+    <div class="slider-nav">
+      <button id="prevBtn">&#10094;</button>
+      <button id="nextBtn">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- 
+    БЛОК С ТЕКСТОМ (выше слайдера с причинами)
+  -->
+  <div class="text-block">
+    <p>Попробуй сделать глубокий вдох носом, закрыв рот, слышишь высокий шум своего процессора?</p>
+    <p>Основа самых частых и первостепенных проблем с компьютером (лаги, снижение производительности, перегрев) — это часто следствие плохой вентиляции в процессоре.</p>
+    <p>ТО же самое с ТОБОЙ — только вместо компа возникают проблемы с головой, и вместо лагов, снижения производительности, и перегрева возникают: рассеянность, внимательность на нуле <b>хотя раньше так не было</b> тревожность, ощущение тумана, отсутствие ясности мыслей, усталость, вялость и даже вИгорание.</p>
+    <p>Даже представить не можете какими самыми неочевидными проявлениями сказывается некачественное и неполное дыхание на человеке</p>
+    <p>Кислород - это первостепенное что у вас есть</p> 
+    <p></p>
+    <p><u>Дыхание ртом - это говнодыхание по сравнению с тем, чтобы дышать носом, начиная с того, что форму вашего лица определяет тип вашего дыхания, а красота и более чётко выраженная очерченность формы лица благодаря свободному дыханию ТОЛЬКО носом — это не тупо красота, заканчивая тем, что дыхание ртом может не только сделать ваше лицо опухшим как бублик со вторым подбородком но и привести к проблемам со здоровьем.</u></p>
+    <p><b>Любой адекватный источник подтвердит и скажет "Да, это действительно так!"</b></p>
+    <p><b>Говоря и показывая вам причины, мы не стремимся тупо продать. Если бы мы стремились — этого текста вы бы вообще не увидели здесь от меня лично. Если бы это было так, я бы сейчас не сидел и не писал вручную то, что знаю, думая, как бы это всё написать, чтобы вы поняли пользу, и направили это Себе на пользу в первую очередь. Я бы просто в gpt это всё давным-давно ctrl+C ctrl+V сделал бы и не парился</b></p>
+    <p>Всё ваше в ваших руках — и ничего больше. Я лишь хочу, чтобы вы поняли, лишь ощутили, что это такое. Вы через 4 дня ах**ете так, будто вы год не мылись и потом сняли люксовую баню на 5 часов со всеми мыльными скраб-процедурами и вышли оттуда совсем другими людьми. Эту ясность ума нужно почувствовать; острота ума и сознания — это то, что заставит почувствовать себя живым спустя долгое время</p>
+  </div>
+
+  <!-- 
+    ГОРИЗОНТАЛЬНЫЙ СЛАЙДЕР (причины дышать носом)
+    Добавлен блок с 6 пунктами, которые можно листать.
+  -->
+  <div class="reasons-slider-container">
+    <h2><b>Критически необходимо дышать носом, а не ртом из-за этого:</b></h2>
+    <div class="reasons-slider" id="reasonsSlider">
+      <!-- Пункт 1 -->
+      <div class="reason-slide">
+        <h3>1. Активация парасимпатической нервной системы</h3>
+        <p>
+          Дыхание через нос активирует парасимпатическую нервную систему, 
+          что способствует расслаблению и снижению уровня стресса.
+        </p>
+      </div>
+      <!-- Пункт 2 -->
+      <div class="reason-slide">
+        <h3>2. Улучшение окисления</h3>
+        <p>
+          Дыхание через нос способствует более глубокому дыханию и 
+          активирует диафрагму, что увеличивает объем легких и улучшает 
+          обмен кислорода и углекислого газа в организме.
+        </p>
+      </div>
+      <!-- Пункт 3 -->
+      <div class="reason-slide">
+        <h3>3. Активация обонятельных рецепторов</h3>
+        <p>
+          Дыхание через нос позволяет лучше ощущать запахи, что важно как 
+          для безопасности (например, обнаружение дыма или пищи), так и 
+          для восприятия окружающего мира.
+        </p>
+      </div>
+      <!-- Пункт 4 -->
+      <div class="reason-slide">
+        <h3>4. Снижение риска апноэ и храпа</h3>
+        <p>
+          Дыхание через нос может снизить вероятность возникновения апноэ 
+          во сне и храпа, так как оно способствует правильному положению 
+          языка и дыхательных путей.
+        </p>
+      </div>
+      <!-- Пункт 5 -->
+      <div class="reason-slide">
+        <h3>5. Поддержание здоровья зубов и десен</h3>
+        <p>
+          Дыхание через рот может приводить к сухости во рту, что 
+          увеличивает риск кариеса, заболеваний десен и так далее.
+        </p>
+      </div>
+      <!-- Пункт 6 -->
+      <div class="reason-slide">
+        <h3>6. Поддержание правильного уровня углекислого газа</h3>
+        <p>
+          Дыхание через нос помогает поддерживать оптимальный уровень 
+          углекислого газа в организме, что необходимо для 
+          функционирования клеток.
+        </p>
+      </div>
+    </div>
+    <!-- Кнопки переключения (причины) -->
+    <div class="reasons-nav">
+      <button id="reasonPrevBtn">&#10094;</button>
+      <button id="reasonNextBtn">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- 
+    ГОРИЗОНТАЛЬНЫЙ СЛАЙДЕР (видео)
+    Располагаем между блоком причин и формой
+  -->
+  <div class="video-slider-container">
+    <div class="video-slider" id="videoSlider">
+      <!-- Видео 1 -->
+      <div class="video-slide">
+        <video 
+          src="video/video1.mp4" 
+          autoplay 
+          loop 
+          muted 
+          playsinline
+        ></video>
+      </div>
+      <!-- Видео 2 -->
+      <div class="video-slide">
+        <video 
+          src="video/video2.mp4" 
+          autoplay 
+          loop 
+          muted 
+          playsinline
+        ></video>
+      </div>
+      <!-- Видео 3 -->
+      <div class="video-slide">
+        <video 
+          src="video/video3.mp4" 
+          autoplay 
+          loop 
+          muted 
+          playsinline
+        ></video>
+      </div>
+    </div>
+
+    <!-- Кнопки переключения (видео) -->
+    <div class="video-nav">
+      <button id="videoPrevBtn">&#10094;</button>
+      <button id="videoNextBtn">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- 
+    ФОРМА ЗАКАЗА 
+-->
+<div class="order-form" id="orderForm">
+  <h2>Получить сегодня</h2>
+  <div class="order-form-content">
+    <!-- Блок для картинки -->
+    <div class="order-form-image">
+      <img src="img/Group 6 (1).jpg" alt="Товар" />
+    </div>
+
+    <!-- Блок для самой формы -->
+    <form>
+      <div class="form-group">
+        <label for="name">Никнейм:</label>
+        <input type="text" id="name" name="name" placeholder="Салфетка" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Телефон:</label>
+        <input type="tel" id="phone" name="phone" placeholder="87718646213" required />
+      </div>
+      <!-- Вариант связи -->
+      <div class="contact-buttons">
+        <button 
+          class="btn-call" 
+          type="button" 
+          onclick="alert('Мы вам скоро перезвоним!')"
+        >
+          Позвони 
+          <p>(мы вам)</p>
+        </button>
+        <button 
+          class="btn-whatsapp" 
+          type="button" 
+          onclick="window.open('https://wa.me/7718646218','_blank')"
+        >
+          Напиши
+          <p>(мы вам)</p>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  <script>
+    // -------------------------------------------------------
+    // Управление слайдером (изображения)
+    // -------------------------------------------------------
+    const sliderWrapper = document.getElementById('sliderWrapper');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentSlide = 0;
+    const totalSlides = document.querySelectorAll('.slide').length;
+
+    prevBtn.addEventListener('click', () => {
+      currentSlide--;
+      if (currentSlide < 0) {
+        currentSlide = totalSlides - 1;
+      }
+      updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentSlide++;
+      if (currentSlide >= totalSlides) {
+        currentSlide = 0;
+      }
+      updateSlider();
+    });
+
+    function updateSlider() {
+      sliderWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    // -------------------------------------------------------
+    // Управление слайдером (причины)
+    // -------------------------------------------------------
+    const reasonsSlider = document.getElementById('reasonsSlider');
+    const reasonPrevBtn = document.getElementById('reasonPrevBtn');
+    const reasonNextBtn = document.getElementById('reasonNextBtn');
+
+    let currentReasonSlide = 0;
+    const totalReasonSlides = document.querySelectorAll('.reason-slide').length;
+
+    reasonPrevBtn.addEventListener('click', () => {
+      currentReasonSlide--;
+      if (currentReasonSlide < 0) {
+        currentReasonSlide = totalReasonSlides - 1;
+      }
+      updateReasonsSlider();
+    });
+
+    reasonNextBtn.addEventListener('click', () => {
+      currentReasonSlide++;
+      if (currentReasonSlide >= totalReasonSlides) {
+        currentReasonSlide = 0;
+      }
+      updateReasonsSlider();
+    });
+
+    function updateReasonsSlider() {
+      reasonsSlider.style.transform = `translateX(-${currentReasonSlide * 100}%)`;
+    }
+
+    // -------------------------------------------------------
+    // Управление слайдером (видео)
+    // -------------------------------------------------------
+    const videoSlider = document.getElementById('videoSlider');
+    const videoPrevBtn = document.getElementById('videoPrevBtn');
+    const videoNextBtn = document.getElementById('videoNextBtn');
+    let currentVideoSlide = 0;
+    const totalVideoSlides = document.querySelectorAll('.video-slide').length;
+
+    videoPrevBtn.addEventListener('click', () => {
+      currentVideoSlide--;
+      if (currentVideoSlide < 0) {
+        currentVideoSlide = totalVideoSlides - 1;
+      }
+      updateVideoSlider();
+    });
+
+    videoNextBtn.addEventListener('click', () => {
+      currentVideoSlide++;
+      if (currentVideoSlide >= totalVideoSlides) {
+        currentVideoSlide = 0;
+      }
+      updateVideoSlider();
+    });
+
+    function updateVideoSlider() {
+      videoSlider.style.transform = `translateX(-${currentVideoSlide * 100}%)`;
+    }
+  </script>
+</body>
+</html>
